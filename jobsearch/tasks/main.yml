@@ -15,6 +15,10 @@
 - name: Create database file if missing
   command: 'sqlite3 {{home_dir}}/jobsearch/www/data/jobsearch.db ""'
            
+- name: Set permissions on database file
+  ansible.builtin.file:
+    path: '{{home_dir}}/jobsearch/www/data/jobsearch.db'
+    mode: '0666'
 
 - name: Create logs table
   shell: |
@@ -35,12 +39,12 @@
 - name: Download a file from GitHub
   get_url:
     url: "https://raw.githubusercontent.com/Anarabbasov/jobsearch/main/podman-compose.yml"
-    dest: "{{home_dir}}" 
+    dest: "{{home_dir}}/jobsearch" 
 
 
 - name: Replace docker image version
   ansible.builtin.replace:
-    path: "{{home_dir}}/podman-compose.yml"
+    path: "{{home_dir}}/jobsearch/podman-compose.yml"
     regexp: 'anarabbasov/jobster:0.0.1'
     replace: "anarabbasov/jobster:{{version_to_deploy}}"
 

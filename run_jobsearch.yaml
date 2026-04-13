@@ -1,5 +1,5 @@
 ---
-- hosts: torrent
+- hosts: evm
   #roles:
   #- name: "jobsearch"
   tasks:
