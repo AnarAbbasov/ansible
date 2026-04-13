@@ -1,6 +1,11 @@
 ---
 - hosts: torrent
-  roles:
-  - name: "jobsearch"
-    
+  #roles:
+  #- name: "jobsearch"
+  tasks:
+  - name: Download a file from GitHub
+    get_url:
+      url: "https://raw.githubusercontent.com/Anarabbasov/jobsearch/main/start_jobster.yaml"
+      dest: "/home/anar"
+ 
     

@@ -2,3 +2,5 @@
 ---
 # vars file for jobsearch
 home_dir: "/home_anar"
+deploy_to_kubernetes: no
+version_to_deploy: 0.3.0
