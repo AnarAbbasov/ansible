@@ -1,0 +1,4 @@
+---
+# defaults file for jobsearch_remove
+home_dir: /home/ansible
+disable_http: yes

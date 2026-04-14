@@ -1,0 +1,5 @@
+---
+- hosts: evm
+  remote_user: ansible
+  roles:
+    - jobsearch_remove
