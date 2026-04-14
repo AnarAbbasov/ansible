@@ -1,38 +1,98 @@
 Role Name
 =========
 
+jobsearch — Deploy and manage a Podman‑based Job Search Logging Web Application.
+
 A brief description of the role goes here.
+
+This role automates the deployment of a lightweight CGI‑based job‑search logging application. It prepares the SQLite database, installs required packages, fetches the latest Podman Compose configuration from GitHub, configures Podman registries, and launches the application using podman-compose. It also ensures the required directory structure exists and opens the necessary firewall ports.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role assumes:
+
+The target system is a RHEL/Fedora/CentOS‑based distribution using dnf.
+
+Podman is installed and functional.
+
+Python 3 and pip3 are available (the role installs python3-pip if missing).
+
+The host uses firewalld (the role enables port 8081/tcp).
+
+Internet access is available to download:
+
+Podman Compose via pip
+
+The podman-compose.yml file from GitHub
+
+The user running the role has privileges to:
+
+Install packages
+
+Modify /etc/containers/registries.conf
+
+Start containers
+
+Modify firewall rules
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The following variables should be defined by the user:
+
+home_dir
+Base directory where the application will be deployed.
+
+Example:
+
+yaml
+home_dir: /home/ansible
+version_to_deploy
+The Docker/Podman image tag to deploy.
+
+Example:
+
+yaml
+version_to_deploy: "0.3.1"
+Variables created or used internally:
+{{home_dir}}/jobsearch/www/data — directory for SQLite DB and CGI data.
+
+{{home_dir}}/jobsearch/podman-compose.yml — downloaded compose file.
+
+No other variables are required.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This role has no external Ansible Galaxy role dependencies.
+
+However, it relies on:
+
+Podman being installed (not installed by this role)
+
+firewalld being present and running
+
+Network access to GitHub and Docker Hub
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+- hosts: jobsearch_servers
+  become: yes
+  vars:
+    home_dir: /home/ansible
+    version_to_deploy: "0.3.1"
+  roles:
+    - role: jobsearch
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Created by Anar Abbasov.
+For questions or improvements, feel free to reach out via GitHub.
