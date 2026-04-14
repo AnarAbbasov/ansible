@@ -79,6 +79,20 @@
     mode: '0644'
 
 
+- name: Ensure SELinux policy tools are installed
+  ansible.builtin.package:
+    name: policycoreutils-python-utils
+    state: present
+
+- name: Set SELinux context for container-writable data directory
+  ansible.builtin.command: >
+    semanage fcontext -a -t container_var_lib_t "{{home_dir}}/jobsearch/www/data(/.*)?"
+    
+- name: Restore SELinux context on data directory
+  ansible.builtin.command: >
+    restorecon -Rv "{{home_dir}}/jobsearch/www/data"
+  
+
 
 - name: Start services with podman-compose
   ansible.builtin.shell: |
