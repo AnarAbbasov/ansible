@@ -1,6 +1,6 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # defaults file for jobsearch
-home_dir: /home/anar
+home_dir: /home/ansible
 deploy_to_kubernetes: no
-version_to_deploy: 0.3.0
+version_to_deploy: 0.3.2

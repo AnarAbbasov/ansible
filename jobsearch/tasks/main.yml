@@ -36,6 +36,13 @@
             timestamp TEXT DEFAULT CURRENT_TIMESTAMP
         );
         "
+
+- name: remove previous docker compose if exists
+  ansible.builtin.file:
+    path: /home/ansible/jobsearch/podman-compose.yml
+    state: absent
+
+
 - name: Download a file from GitHub
   get_url:
     url: "https://raw.githubusercontent.com/Anarabbasov/jobsearch/main/podman-compose.yml"
@@ -58,7 +65,29 @@
     name: podman-compose
     executable: pip3
 
+- name: Configure Podman to use docker.io as default registry
+  ansible.builtin.copy:
+    dest: /etc/containers/registries.conf
+    content: |
+      unqualified-search-registries = ["docker.io", "registry.access.redhat.com", "registry.redhat.io"]
+
+      [[registry]]
+      prefix = "docker.io"
+      location = "registry-1.docker.io"
+    owner: root
+    group: root
+    mode: '0644'
+
+
+
 - name: Start services with podman-compose
-  ansible.builtin.command:
-    cmd: podman-compose up -d
-    chdir: "{{home_dir}}"
+  ansible.builtin.shell: |
+    cd "{{home_dir}}/jobsearch"; /usr/local/bin/podman-compose up -d 
+  become: yes
+  
+- name: Open port 8081/tcp in firewalld
+  ansible.posix.firewalld:
+    service: http
+    permanent: true
+    state: enabled
+    immediate: yes

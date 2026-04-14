@@ -1,11 +1,11 @@
 ---
 - hosts: evm
-  #roles:
-  #- name: "jobsearch"
-  tasks:
-  - name: Download a file from GitHub
-    get_url:
-      url: "https://raw.githubusercontent.com/Anarabbasov/jobsearch/main/start_jobster.yaml"
-      dest: "/home/anar"
+  roles:
+  - name: "jobsearch"
+  #tasks:
+  #- name: Download a file from GitHub
+  #  get_url:
+  #    url: "https://raw.githubusercontent.com/Anarabbasov/jobsearch/main/podman-compose.yml"
+  #    dest: "/home/ansible"
  
     
