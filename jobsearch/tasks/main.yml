@@ -39,7 +39,7 @@
 
 - name: remove previous docker compose if exists
   ansible.builtin.file:
-    path: /home/ansible/jobsearch/podman-compose.yml
+    path: "{{home_dir}}/jobsearch/podman-compose.yml"
     state: absent
 
 
